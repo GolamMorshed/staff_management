@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using managment.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 
@@ -6,12 +7,24 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
 // Configure your database connection here
 var connectionString = "Server=localhost;Port=3306;Database=staff_management;User=root;Password=;";
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
 	options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
+
+builder.Services.AddDbContext<EmployeeDbContext>(options =>
+{
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+});
+
+//// Create a common method to configure DbContext
+//void ConfigureDbContext<TContext>(DbContextOptionsBuilder<TContext> optionsBuilder) where TContext : DbContext
+//{
+//	optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+//}
 
 var app = builder.Build();
 
